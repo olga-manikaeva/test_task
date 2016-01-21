@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Test Task</title>
+    <link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="app/css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="bs-header">
+      <div class="container">
+        <h1>Questions</h1>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 main-container">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/template" id="tpl-questions">
+      <h2 class="page-header text-center">List of questions</h2>
+        <ul class="media-list row questions-container"></ul>
+        <p class="text-center">
+        <a href="#questions/new" class="btn btn-lg btn-outline add-question-btn">Add question</a>
+      </p>
+     </script>
+
+    <script type="text/template" id="tpl-question">
+      <div class="thumbnail">
+        <img class="media-object" src="app/img/question.png">
+      </div>
+      <div class="media-heading">
+          <h3>
+              Theme: <%- theme %>
+              <small>
+                  <a href="#questions/look/<%- id %>"><span class="glyphicon glyphicon-search"></span></a>
+                  <a href="#questions/edit/<%- id %>"><span class="glyphicon glyphicon-pencil edit-contract"></span></a>
+                  <a href="#questions/delete/<%- id %>" class="delete-contract">
+                      <span class="glyphicon glyphicon-trash"></span>
+                  </a>
+              </small>
+           </h3>
+
+      </div>
+      <div class="media-body">
+        <dl>
+          <dt>Nickname:<%- nickname %></dt>
+          <dd>Text: <%- text_q %></dd>
+        </dl>
+      </div>
+      <hr>
+    </script>
+
+    <script type="text/template" id="tpl-look-question">
+        <h2 class="page-header text-center">Look question</h2>
+        <form role="form" class="form-horizontal contract-form">
+            <h3>Question:</h3>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Nickname:</label>
+                <div class="col-sm-6">
+                    <%- nickname %>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Theme:</label>
+                <div class="col-sm-6">
+                    <%- theme %>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Text of question:</label>
+                <div class="col-sm-6">
+                    <%- text_q %>
+                 </div>
+            </div>
+
+        <!--Answer-->
+            <hr>
+            <h3>Answers:</h3>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Nickname:</label>
+                <div class="col-sm-6">
+                    <%- nickname_a %>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Answer:</label>
+                <div class="col-sm-6">
+                    <%- text_a %>
+                </div>
+            </div>
+
+            <!--Add answer-->
+            <hr>
+            <h3>Add your answers:</h3>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Your nickname:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control question-nickname_a-input" value="<%- nickname_a %>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Your answer:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control question-text_a-input" value="<%- text_a %>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-3">
+                    <button type="submit" class="btn btn-outline btn-lg btn-block">Add answer</button>
+                </div>
+                <div class="col-sm-3">
+                    <a href="#questions" class="btn btn-outline btn-lg btn-block form-cancel-btn">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </script>
+
+
+    <script type="text/template" id="tpl-new-question">
+      <h2 class="page-header text-center"><%= isNew ? 'Create' : 'Edit' %> question</h2>
+      <form role="form" class="form-horizontal contract-form">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Nickname:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control question-nickname-input" value="<%- nickname %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Theme:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control question-theme-input" value="<%- theme %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Text of question:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control question-text_q-input" value="<%- text_q %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-3">
+            <button type="submit" class="btn btn-outline btn-lg btn-block">Submit</button>
+          </div>
+          <div class="col-sm-3">
+            <a href="#questions" class="btn btn-outline btn-lg btn-block form-cancel-btn">Cancel</a>
+          </div>
+        </div>
+      </form>
+    </script>
+
+    <script src="vendor/jquery/jquery.js"></script>
+    <script src="vendor/underscore/underscore.js"></script>
+    <script src="vendor/backbone/backbone.js"></script>
+    <script src="vendor/marionette/lib/backbone.marionette.js"></script>
+    <script src="vendor/Backbone.localStorage/backbone.localStorage.js"></script>
+
+    <script src="app/js/app.js"></script>
+    <script src="app/js/models/questions.js"></script>
+    <script src="app/js/collections/questions.js"></script>
+    <script src="app/js/views/question.js"></script>
+    <script src="app/js/views/questions.js"></script>
+    <script src="app/js/views/questionForm.js"></script>
+    <script src="app/js/views/questionList.js"></script>
+    <script src="app/js/controller.js"></script>
+    <!--<script src="app/js/views/answerList.js"></script>-->
+    <!--<script src="app/js/views/answers.js"></script>-->
+    <!--<script src="app/js/views/answer.js"></script>-->
+    <!--<script src="app/js/models/answers.js"></script>-->
+    <!--<script src="app/js/collections/answers.js"></script>-->
+
+    <!--<script src="app/js/controller-2.js"></script>-->
+    <script src="app/js/router.js"></script>
+
+    <script>
+      $(function() {
+        questionManager.start();
+      });
+    </script>
+    <!--<script>-->
+        <!--$(function() {-->
+            <!--answerManager.start();-->
+        <!--});-->
+    <!--</script>-->
+  </body>
+</html>
